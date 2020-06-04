@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="offset-md-2 col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        My feeds
+                    </div>
+                    {% if created_feeds %}
+                        <ul class="list-group list-group-flush">
+                            {% for feed in created_feeds %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'feeds:detail' feed.pk %}">{{ feed.name }}</a>
+                                    <a href="{% url 'feeds:update' feed.pk %}"><i class="far fa-edit"></i></a>
+                                </li>
+
+                            {% endfor %}
+                        </ul>
+                        <div class="card-body">
+                            <a href="{% url 'feeds:create' %}" class="btn btn-primary">Create a feed</a>
+                        </div>
+                    {% else %}
+                        <div class="card-body">
+                            <h5 class="card-title">You don't have any created feeds yet</h5>
+                            <p class="card-text">You definitely should create one </p>
+                            <a href="{% url 'feeds:create' %}" class="btn btn-primary">Create a feed</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        Followed feeds
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Cras justo odio</li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
