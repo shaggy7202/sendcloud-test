@@ -1,10 +1,12 @@
 from django.views.generic import DeleteView
 from django.http import Http404
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from feeds.models import Feed
 
 
-class FeedDeleteView(DeleteView):
+class FeedDeleteView(LoginRequiredMixin, DeleteView):
     model = Feed
     template_name = 'feeds/delete.html'
     success_url = reverse_lazy('feeds:list')

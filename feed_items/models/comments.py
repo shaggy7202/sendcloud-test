@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class FeedItemComment(models.Model):
+class Comment(models.Model):
     feed_item = models.ForeignKey(
         'feed_items.FeedItem',
         on_delete=models.CASCADE,
