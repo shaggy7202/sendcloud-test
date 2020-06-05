@@ -6,4 +6,3 @@ class FeedUpdateView(UpdateView):
     model = Feed
     template_name = 'feeds/update.html'
     fields = ['name']
-

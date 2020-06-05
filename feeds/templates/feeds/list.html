@@ -1,19 +1,19 @@
-{% extends "base.html" %}
-
+{% extends 'base.html' %}
 {% block content %}
     <div class="container">
         <div class="row">
-            <div class="offset-md-2 col-md-4">
+            <div class="offset-md-1 col-md-10">
                 <div class="card">
                     <div class="card-header">
                         My feeds
                     </div>
-                    {% if created_feeds %}
+                    {% if object_list %}
                         <ul class="list-group list-group-flush">
-                            {% for feed in created_feeds %}
+                            {% for feed in object_list %}
                                 <li class="list-group-item">
                                     <a href="{% url 'feeds:detail' feed.pk %}">{{ feed.name }}</a>
                                     <a href="{% url 'feeds:update' feed.pk %}"><i class="far fa-edit"></i></a>
+                                    <a href="{% url 'feeds:delete' feed.pk %}"><i class="far fa-trash-alt"></i></a>
                                 </li>
 
                             {% endfor %}
@@ -30,18 +30,7 @@
                     {% endif %}
                 </div>
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        Followed feeds
-                    </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Cras justo odio</li>
-                        <li class="list-group-item">Dapibus ac facilisis in</li>
-                        <li class="list-group-item">Vestibulum at eros</li>
-                    </ul>
-                </div>
-            </div>
         </div>
     </div>
+    {% include 'pagination.html' %}
 {% endblock %}

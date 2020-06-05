@@ -20,10 +20,14 @@ services:
       - "8000:8000"
     depends_on:
       - db
+      - celery_worker
+      - celery_beat
 
   celery_worker:
     build: .
-    command: celery -A backend worker -l info
+    volumes:
+      - .:/code
+    command: celery -A sendcloud worker -l info
     env_file:
       - development.env
     depends_on:
@@ -32,7 +36,9 @@ services:
 
   celery_beat:
     build: .
-    command: celery -A backend beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - .:/code
+    command: celery -A sendcloud beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     env_file:
       - development.env
     depends_on:

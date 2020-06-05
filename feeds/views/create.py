@@ -1,16 +1,14 @@
 from django.views.generic.edit import CreateView
-from django.shortcuts import redirect
-from feeds.models import Feed
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from feeds.forms import CreateFeedForm
 
 
-class FeedCreateView(CreateView):
-    model = Feed
-    fields = ['name', 'url']
+class FeedCreateView(LoginRequiredMixin, CreateView):
+    form_class = CreateFeedForm
     template_name = 'feeds/create.html'
 
-    def form_valid(self, form):
-        feed = form.save(commit=False)
-        feed.created_by = self.request.user
-        feed.save()
-        self.object = feed
-        return redirect(feed.get_absolute_url())
+    def get_form_kwargs(self):
+        kwargs = super(FeedCreateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs

@@ -4,9 +4,9 @@ from django.urls import reverse_lazy
 
 
 class SignUpView(FormView):
-    template_name = 'registration/signup.html'
+    template_name = 'accounts/signup.html'
     form_class = UserCreationForm
-    success_url = reverse_lazy('profile')
+    success_url = reverse_lazy('feeds:list')
 
     def form_valid(self, form):
         form.save()

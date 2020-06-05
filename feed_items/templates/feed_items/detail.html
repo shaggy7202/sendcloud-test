@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <h1 class="text-center">{{ object.title }}</h1>
+            <p>{{ object.description|safe }}</p>
+            <a href="{{ object.link }}" target="_blank">Read full article</a>
+        </div>
+    </div>
+    </div>
+{% endblock %}

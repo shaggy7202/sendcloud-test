@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,6 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+LOGIN_REDIRECT_URL = reverse_lazy('feeds:list')
+LOGOUT_REDIRECT_URL = reverse_lazy('index')
+
 
 # Application definition
 
@@ -38,9 +42,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_celery_beat',
+
     'accounts',
     'sendcloud',
-    'feeds'
+    'feeds',
+    'feed_items'
 ]
 
 MIDDLEWARE = [
@@ -126,3 +133,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+CELERY_BROKER_URL = f'amqp://{os.environ["RABBITMQ_DEFAULT_USER"]}:' \
+                    f'{os.environ["RABBITMQ_DEFAULT_PASS"]}@rabbitmq:5672'
+CELERY_TIMEZONE = 'Europe/Kiev'

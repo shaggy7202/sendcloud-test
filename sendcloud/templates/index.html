@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="jumbotron">
+                    <h1 class="display-4">Hello, user!</h1>
+                    <p class="lead">This is a the best RSS parser ever!</p>
+                    <hr class="my-4">
+                    {% if user.is_authenticated %}
+                        <p>What do you want to do today?</p>
+                        <a class="btn btn-primary btn-lg" href="{% url 'feeds:list' %}" role="button">My feeds</a>
+                    {% else %}
+                        <p>You should have account to work with our parser</p>
+                        <a class="btn btn-primary btn-lg" href="{% url 'accounts:login' %}" role="button">Login</a>
+                        <a class="btn btn-primary btn-lg" href="{% url 'accounts:signup' %}" role="button">Signup</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
