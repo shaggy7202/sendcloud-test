@@ -6,6 +6,7 @@ from feeds.views import (
     FeedDeleteView,
     FeedListView,
     FeedUpdateView,
+    FetchItemsForFeedView
 )
 
 app_name = 'feeds'
@@ -15,4 +16,9 @@ urlpatterns = [
     path('<int:pk>/', FeedDetailView.as_view(), name='detail'),
     path('<int:pk>/update/', FeedUpdateView.as_view(), name='update'),
     path('<int:pk>/delete/', FeedDeleteView.as_view(), name='delete'),
+    path(
+        '<int:pk>/fetch-items/',
+        FetchItemsForFeedView.as_view(),
+        name='fetch_items'
+    ),
 ]

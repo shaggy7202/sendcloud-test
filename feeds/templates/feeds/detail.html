@@ -2,8 +2,16 @@
 {% block content %}
     <div class="container">
         <div class="row">
+            {% if not feed.fetcher.enabled %}
+                <div class="col-md-8 offset-md-2">
+                    <div class="alert alert-danger" role="alert">
+                        We aren't able to automatically update your feed anymore. Please, try manual update instead!
+                    </div>
+                </div>
+            {% endif %}
             <div class="col-md-12">
                 <h1 class="text-center">{{ feed.name }} <span class="badge badge-pill badge-danger">{{not_viewed_items_count}}</span></h1>
+                <h3 class="text-center"> <a href="{% url 'feeds:fetch_items' feed.pk %}">Update <i class="fas fa-sync-alt"></i></a></h3>
                 <div class="list-group">
                     {% for item in page_obj %}
                         <a href="{% url 'feed_items:detail' item.pk %}" class="list-group-item list-group-item-action {% if not item.viewed %}list-group-item-primary{% endif %}">

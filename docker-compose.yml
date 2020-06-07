@@ -12,6 +12,7 @@ services:
 
   web:
     build: .
+    entrypoint: /code/entrypoint.sh
     volumes:
       - .:/code
     env_file:
@@ -22,6 +23,7 @@ services:
       - db
       - celery_worker
       - celery_beat
+      - memcached
 
   celery_worker:
     build: .
@@ -53,5 +55,10 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+  memcached:
+    image: memcached:latest
+    ports:
+      - "11211:11211"
+
 volumes:
   pg_data:

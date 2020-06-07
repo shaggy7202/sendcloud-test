@@ -43,5 +43,9 @@ class FeedItem(models.Model):
         unique_together = ('feed', 'guid')
         ordering = ['-publication_date']
 
+    def mark_as_viewed(self):
+        self.viewed = True
+        self.save()
+
     def __str__(self):
         return self.title

@@ -12,11 +12,13 @@ class FeedItemDetailView(LoginRequiredMixin, FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['feed_item'] = get_object_or_404(
+        feed_item = get_object_or_404(
             klass=FeedItem,
             pk=self.kwargs['pk'],
             feed__created_by=self.request.user
         )
+        feed_item.mark_as_viewed()
+        context['feed_item'] = feed_item
         return context
 
     def get_success_url(self):

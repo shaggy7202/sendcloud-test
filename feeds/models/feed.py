@@ -2,10 +2,10 @@ import json
 
 from django.conf import settings
 from django.db import models
-from django.db.models.signals import pre_delete
 from django.dispatch import receiver
 from django.shortcuts import reverse
 from django_celery_beat.models import PeriodicTask, IntervalSchedule
+from feedparser import parse
 
 
 class Feed(models.Model):
@@ -42,7 +42,11 @@ class Feed(models.Model):
         )
         self.save()
 
+    def fetch_items(self):
+        result = parse(self.url)
+        return result['entries']
 
-@receiver(pre_delete, sender=Feed)
-def save_profile(sender, instance, **kwargs):
+
+@receiver(models.signals.pre_delete, sender=Feed)
+def delete_fetcher(sender, instance, **kwargs):
     instance.fetcher.delete()
