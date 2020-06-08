@@ -12,7 +12,6 @@ services:
 
   web:
     build: .
-    entrypoint: /code/entrypoint.sh
     volumes:
       - .:/code
     env_file:

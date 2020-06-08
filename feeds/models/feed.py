@@ -36,7 +36,7 @@ class Feed(models.Model):
         )
         self.fetcher = PeriodicTask.objects.create(
             interval=schedule,
-            name=f'Fetching feed items for {self.name} feed',
+            name=f'Fetching feed items for Feed with pk {self.pk}',
             task='feeds.tasks.fetch_items_for_feed.task_fetch_items_for_feed',
             kwargs=json.dumps({'feed_pk': self.pk})
         )

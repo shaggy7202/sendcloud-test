@@ -20,8 +20,6 @@ def task_fetch_items_for_feed(self, feed_pk):
     if acquire_lock:
         try:
             fetch_items(feed_pk=feed_pk, task=self)
-            import time
-            time.sleep(15)
         except SoftTimeLimitExceeded:
             if self.request.retries < self.max_retries:
                 raise self.retry(countdown=30)

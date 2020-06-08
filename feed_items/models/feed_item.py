@@ -35,7 +35,6 @@ class FeedItem(models.Model):
     publication_date = models.DateTimeField()
     link = models.URLField()
     viewed = models.BooleanField(default=False)
-    favourite = models.BooleanField(default=False)
 
     objects = FeedItemManager()
 

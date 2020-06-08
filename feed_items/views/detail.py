@@ -1,37 +1,19 @@
-from django.views.generic.edit import FormView
-from django.shortcuts import get_object_or_404, reverse
+from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import Http404
 
-from feed_items.models import FeedItem
 from feed_items.forms import CreateCommentForm
+from feed_items.models import FeedItem
 
 
-class FeedItemDetailView(LoginRequiredMixin, FormView):
+class FeedItemDetailView(LoginRequiredMixin, DetailView):
     form_class = CreateCommentForm
     template_name = 'feed_items/detail.html'
+    model = FeedItem
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        feed_item = get_object_or_404(
-            klass=FeedItem,
-            pk=self.kwargs['pk'],
-            feed__created_by=self.request.user
-        )
-        feed_item.mark_as_viewed()
-        context['feed_item'] = feed_item
-        return context
-
-    def get_success_url(self):
-        return reverse('feed_items:detail', args=(self.kwargs['pk'],))
-
-    def form_valid(self, form):
-        comment = form.save(commit=False)
-        comment.feed_item_id = self.kwargs['pk']
-        comment.save()
-        return super().form_valid(form)
-
-    def get_form_kwargs(self):
-        kwargs = super(FeedItemDetailView, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        kwargs['feed_item_pk'] = self.kwargs['pk']
-        return kwargs
+    def get_object(self, queryset=None):
+        obj = super(FeedItemDetailView, self).get_object()
+        obj.mark_as_viewed()
+        if not obj.feed.created_by == self.request.user:
+            raise Http404
+        return obj

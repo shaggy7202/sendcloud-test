@@ -1,2 +1,7 @@
 from feed_items.views.detail import FeedItemDetailView
+from feed_items.views.create_comment import CommentCreateView
 from feed_items.views.delete_comment import CommentDeleteView
+from feed_items.views.favourite_list import FavouriteListView
+from feed_items.views.create_favourite import FavouriteCreateView
+from feed_items.views.delete_favourite import FavouriteDeleteView
+

@@ -11,5 +11,4 @@ class FeedListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset.filter(created_by=self.request.user)
-        return queryset
+        return queryset.filter(created_by=self.request.user)
