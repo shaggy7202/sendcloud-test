@@ -1,9 +1,12 @@
 from celery import shared_task
-from celery.exceptions import SoftTimeLimitExceeded
+from celery.exceptions import SoftTimeLimitExceeded, MaxRetriesExceededError
 
 from django.core.cache import cache
 
 from feeds.models import Feed
+
+# Retry task in 30 seconds
+COUNTDOWN = 30
 
 
 @shared_task(bind=True, max_retries=3, soft_time_limit=5)
@@ -15,27 +18,24 @@ def task_fetch_items_for_feed(self, feed_pk):
     lock_id = f'lock-for-feed-{feed_pk}'
 
     # cache.add return False if value already in the cache
-    acquire_lock = cache.add(lock_id, "true", 10)  # Cache for 10 sec
+    acquire_lock = cache.add(lock_id, "true", 5)  # Cache for 5 sec
 
     if acquire_lock:
+        feed = Feed.objects.get(pk=feed_pk)
         try:
-            fetch_items(feed_pk=feed_pk, task=self)
+            fetch_items(feed=feed, task=self)
         except SoftTimeLimitExceeded:
             if self.request.retries < self.max_retries:
-                raise self.retry(countdown=30)
+                raise self.retry(countdown=COUNTDOWN)
+        except MaxRetriesExceededError:
+            feed.fetcher.enabled = False
+            feed.fetcher.save()
         finally:
             cache.delete(lock_id)
 
 
-def fetch_items(feed_pk, task):
-    feed = Feed.objects.get(pk=feed_pk)
-
-    # Disable periodic task after maximum amount of retries is reached
-    if task.request.retries >= task.max_retries:
-        feed.fetcher.enabled = False
-        return feed.fetcher.save()
-
+def fetch_items(feed, task):
     if items := feed.fetch_items():
-        feed.items.save_items(feed, items)
-    else:
-        raise task.retry(countdown=30)  # Retry task in 30 seconds
+        return feed.items.save_items(feed, items)
+    raise task.retry(countdown=COUNTDOWN)
+

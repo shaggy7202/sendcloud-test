@@ -1,9 +1,10 @@
 from django.views.generic.list import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from feed_items.models import Favourite
 
 
-class FavouriteListView(ListView):
+class FavouriteListView(LoginRequiredMixin, ListView):
     template_name = 'feed_items/favourites_list.html'
     model = Favourite
     paginate_by = 20

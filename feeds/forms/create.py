@@ -14,21 +14,14 @@ class CreateFeedForm(forms.ModelForm):
         url = self.cleaned_data['url']
         if Feed.objects.filter(created_by=self.user, url=url).exists():
             raise forms.ValidationError('You already have feed for this url')
-        return url
 
-    def clean(self):
-        cleaned_data = super().clean()
-
-        # Don't need to do additional validation if form has errors
-        if self.errors.keys():
-            return cleaned_data
-        result = parse(cleaned_data['url'])
+        result = parse(url)
         self.items = result['entries']
 
         # Consider url invalid if no entries returned
         if not self.items:
             raise forms.ValidationError('Unable to process given RSS feed url')
-        return cleaned_data
+        return url
 
     def save(self, commit=True):
         feed = super().save(commit=False)

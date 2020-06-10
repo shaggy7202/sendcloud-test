@@ -2,7 +2,7 @@ from django.db import models
 from dateutil import parser
 
 
-class FeedItemManager(models.Manager):
+class FeedItemsManager(models.Manager):
     def save_items(self, feed, items):
         saved_items = set(
             self.filter(feed=feed).values_list('guid', flat=True)
@@ -36,7 +36,7 @@ class FeedItem(models.Model):
     link = models.URLField()
     viewed = models.BooleanField(default=False)
 
-    objects = FeedItemManager()
+    objects = FeedItemsManager()
 
     class Meta:
         unique_together = ('feed', 'guid')
