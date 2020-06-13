@@ -37,10 +37,18 @@ class Feed(models.Model):
         self.fetcher = PeriodicTask.objects.create(
             interval=schedule,
             name=f'Fetching feed items for Feed with pk {self.pk}',
-            task='feeds.tasks.fetch_items_for_feed.task_fetch_items_for_feed',
+            task='feeds.tasks.update_feed.task_update_feed',
             kwargs=json.dumps({'feed_pk': self.pk})
         )
         self.save()
+
+    def disable_fetcher(self):
+        self.fetcher.enabled = False
+        self.fetcher.save()
+
+    def enable_fetcher(self):
+        self.fetcher.enabled = True
+        self.fetcher.save()
 
     def fetch_items(self):
         result = parse(self.url)

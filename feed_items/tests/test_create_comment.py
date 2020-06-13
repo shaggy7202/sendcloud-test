@@ -27,6 +27,9 @@ def test_create_comment_another_user(client, feed_item, second_user):
     }
     response = client.post(url, data)
     assert response.status_code == 404
+    assert not Comment.objects.filter(
+        feed_item=feed_item, text=data['text']
+    ).exists()
 
 
 @pytest.mark.django_db

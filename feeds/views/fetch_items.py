@@ -9,28 +9,22 @@ from feeds.models import Feed
 
 
 class FetchItemsForFeedView(LoginRequiredMixin, View):
+    """View for manually updating feed items"""
+
     def get(self, request, pk):
         feed = get_object_or_404(klass=Feed, pk=pk, created_by=request.user)
         lock_id = f'lock-for-feed-{pk}'
-        # Checking if async update already running and wait if needed.
-        # Soft kill after 5 sec
-        if cache.get(lock_id):
-            sleep(5)
 
-        # Setting lock in case async task failed and will be restarted
-        cache.set(lock_id, 'true', timeout=None)
-
-        # Disable fetcher while manually updating the feed
-        if feed.fetcher.enabled:
-            feed.fetcher.enabled = False
-            feed.fetcher.save()
+        # Trying to get lock and wait if task is running now.
+        # Task will be killed after 5 sec in case it freezes.
+        while not cache.add(lock_id):
+            sleep(1)
 
         items = feed.fetch_items()
         if items:
-            # Enable fetcher again if update was successful
             feed.items.save_items(feed, items)
-            feed.fetcher.enabled = True
-            feed.fetcher.save()
+            # Enable fetcher again if update was successful
+            feed.enable_fetcher()
 
         cache.delete(lock_id)
         return redirect('feeds:detail', pk=pk)

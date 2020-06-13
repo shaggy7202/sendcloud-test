@@ -4,19 +4,20 @@ from feeds.models import Feed
 from feed_items.models import FeedItem, Comment, Favourite
 
 from django_celery_beat.models import PeriodicTask, IntervalSchedule
+from django.utils.timezone import now
 
 
 @pytest.fixture
 def user(django_user_model):
     return django_user_model.objects.create_user(
-        username="someone", password="someUserPass12"
+        username="someone", password="someUserPass12", last_login=now()
     )
 
 
 @pytest.fixture
 def second_user(django_user_model):
     return django_user_model.objects.create_user(
-        username="someone2", password="someUserPass12"
+        username="someone2", password="someUserPass12", last_login=now()
     )
 
 

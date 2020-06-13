@@ -1,1 +1,1 @@
-from feeds.tasks.fetch_items_for_feed import task_fetch_items_for_feed
+from feeds.tasks.update_feed import task_update_feed
