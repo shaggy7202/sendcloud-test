@@ -3,3 +3,4 @@
 .git/
 .idea/
 .pytest_cache
+celerybeeat.pid

@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 from dateutil import parser
 
 
@@ -12,11 +13,15 @@ class FeedItemsManager(models.Manager):
             if item.id in saved_items:
                 # Item already saved
                 continue
+            if published := item.get('published'):
+                publication_date = parser.parse(published)
+            else:
+                publication_date = now()
             result_items.append(self.model(
                 title=item.title,
                 link=item.link,
                 guid=item.id,
-                publication_date=parser.parse(item.published),
+                publication_date=publication_date,
                 description=item.summary,
                 feed=feed
             ))

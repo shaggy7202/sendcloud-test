@@ -17,7 +17,7 @@ class FetchItemsForFeedView(LoginRequiredMixin, View):
 
         # Trying to get lock and wait if task is running now.
         # Task will be killed after 5 sec in case it freezes.
-        while not cache.add(lock_id):
+        while not cache.add(lock_id, "true", timeout=None):
             sleep(1)
 
         items = feed.fetch_items()

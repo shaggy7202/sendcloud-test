@@ -57,4 +57,5 @@ class Feed(models.Model):
 
 @receiver(models.signals.pre_delete, sender=Feed)
 def delete_fetcher(sender, instance, **kwargs):
-    instance.fetcher.delete()
+    if instance.fetcher:
+        instance.fetcher.delete()
