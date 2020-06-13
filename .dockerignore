@@ -2,3 +2,4 @@
 .dockerignore
 .git/
 .idea/
+.pytest_cache

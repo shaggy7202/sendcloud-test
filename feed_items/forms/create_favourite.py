@@ -1,6 +1,6 @@
 from django import forms
 
-from feed_items.models import Favourite, FeedItem
+from feed_items.models import Favourite
 
 
 class CreateFavouriteForm(forms.ModelForm):

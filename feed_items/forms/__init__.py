@@ -1,3 +1,2 @@
 from feed_items.forms.create_comment import CreateCommentForm
 from feed_items.forms.create_favourite import CreateFavouriteForm
-
