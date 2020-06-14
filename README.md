@@ -3,7 +3,7 @@
 To run project locally, you should do the next simple steps:
 
 1. Clone the repo `git clone git@github.com:shaggy7202/sendcloud-test.git`
-2. Move to the project directory `cd sendcloud`
+2. Move to the project directory `cd sendcloud-test`
 3. Build docker containers `docker-compose build`
 4. Run the migrations `docker-compose run web python manage.py migrate`
 5. Start the project `docker-compose up -d` 

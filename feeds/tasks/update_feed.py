@@ -28,7 +28,9 @@ def task_update_feed(self, feed_pk):
         user_inactive_days = user_inactive_datetime.days
 
         if max_retries_exceeded or user_inactive_days >= 7:
-            return feed.disable_fetcher()
+            feed.disable_fetcher()
+            cache.delete(lock_id)
+            return
 
         try:
             fetch_items(feed=feed, task=self)

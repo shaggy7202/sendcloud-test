@@ -22,6 +22,8 @@ def test_task(
     )
     task_update_feed(feed.pk)
     assert feed.items.count() == 2
+    patched_add.assert_called_once()
+    patched_delete.assert_called_once()
 
 
 @pytest.mark.django_db
@@ -39,6 +41,8 @@ def test_task_disabled_after_max_retries(
     task_update_feed(feed.pk)
     updated_feed = Feed.objects.get(pk=feed.pk)
     assert updated_feed.fetcher.enabled is False
+    patched_add.assert_called_once()
+    patched_delete.assert_called_once()
 
 
 @pytest.mark.django_db
@@ -66,6 +70,9 @@ def test_task_disabled_user_inactive_week(
     updated_feed = Feed.objects.get(pk=feed.pk)
     assert updated_feed.fetcher.enabled is False
 
+    patched_add.assert_called_once()
+    patched_delete.assert_called_once()
+
 
 @pytest.mark.django_db
 @patch.object(cache, 'add', return_value=True)
@@ -74,3 +81,6 @@ def test_task_disabled_user_inactive_week(
 def test_task_retried(patched_add, patched_delete, patched_fetch, feed):
     with pytest.raises(Retry):
         task_update_feed(feed.pk)
+    patched_add.assert_called_once()
+    patched_delete.assert_called_once()
+    patched_fetch.assrt_called_once()
