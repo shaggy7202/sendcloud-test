@@ -5,6 +5,8 @@ from feed_items.models import Comment
 
 
 class CommentDeleteView(LoginRequiredMixin, View):
+    """View for deleting the comment"""
+
     def post(self, request, pk):
         comment = get_object_or_404(
             klass=Comment, pk=pk, feed_item__feed__created_by=request.user

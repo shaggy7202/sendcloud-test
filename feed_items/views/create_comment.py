@@ -7,6 +7,8 @@ from feed_items.forms import CreateCommentForm
 
 
 class CommentCreateView(LoginRequiredMixin, View):
+    """View for creating a new comment to feed item"""
+
     def post(self, request):
         form = CreateCommentForm(
             user=request.user, data=request.POST

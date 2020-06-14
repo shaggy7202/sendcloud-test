@@ -6,6 +6,8 @@ from feed_items.models import Favourite
 
 
 class FavouriteDeleteView(LoginRequiredMixin, View):
+    """View for removing feed item from favourites"""
+
     def post(self, request, pk):
         favourite = get_object_or_404(
             klass=Favourite, pk=pk, feed_item__feed__created_by=request.user

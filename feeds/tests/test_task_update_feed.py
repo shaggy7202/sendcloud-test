@@ -21,6 +21,7 @@ def test_task(
         body=rss_feed_xml,
     )
     task_update_feed(feed.pk)
+    # Check feed items created from fixture
     assert feed.items.count() == 2
     patched_add.assert_called_once()
     patched_delete.assert_called_once()

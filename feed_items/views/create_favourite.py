@@ -6,6 +6,8 @@ from feed_items.forms import CreateFavouriteForm
 
 
 class FavouriteCreateView(LoginRequiredMixin, View):
+    """View for adding feed item to favourites"""
+
     def post(self, request):
         form = CreateFavouriteForm(user=request.user, data=request.POST)
         if form.is_valid():

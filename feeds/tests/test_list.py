@@ -6,7 +6,6 @@ from pytest_django.asserts import assertQuerysetEqual, assertRedirects
 
 @pytest.mark.django_db
 def test_feed_list(authenticated_client, feed):
-
     url = reverse('feeds:list')
     response = authenticated_client.get(url)
     assertQuerysetEqual(response.context_data['object_list'], [repr(feed)])

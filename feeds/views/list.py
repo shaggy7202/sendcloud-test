@@ -5,6 +5,8 @@ from feeds.models import Feed
 
 
 class FeedListView(LoginRequiredMixin, ListView):
+    """View for displaying a list of feeds created by user"""
+
     model = Feed
     paginate_by = 20
     template_name = 'feeds/list.html'

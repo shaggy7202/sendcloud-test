@@ -7,6 +7,8 @@ from feeds.models import Feed
 
 
 class FeedDeleteView(LoginRequiredMixin, DeleteView):
+    """View for deleting the feed"""
+
     model = Feed
     template_name = 'feeds/delete.html'
     success_url = reverse_lazy('feeds:list')

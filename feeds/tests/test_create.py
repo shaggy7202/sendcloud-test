@@ -50,6 +50,7 @@ def test_create_feed_same_url(authenticated_client, feed):
 @pytest.mark.django_db
 @httpretty.activate
 def test_create_feed_invalid_url(authenticated_client):
+    # Returned result isn't valid XML, so form should be invalid
     httpretty.register_uri(
         httpretty.GET, 'http://dummysite.com',
         body='{"results": "some results here"}',

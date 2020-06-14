@@ -11,6 +11,8 @@ def test_delete_feed(authenticated_client, feed):
     fetcher = feed.fetcher
     url = reverse('feeds:delete', kwargs={'pk': feed.pk})
     authenticated_client.post(url)
+
+    # Make sure task also deleted
     assert not PeriodicTask.objects.filter(pk=fetcher.pk).exists()
     assert not Feed.objects.filter(pk=feed.pk).exists()
 

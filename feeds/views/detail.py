@@ -10,6 +10,8 @@ from feeds.models import Feed
 
 @method_decorator(never_cache, 'get')
 class FeedDetailView(LoginRequiredMixin, View):
+    """View for displaying single feed"""
+
     def get(self, request, pk):
         feed = get_object_or_404(
             klass=Feed, pk=pk, created_by=self.request.user

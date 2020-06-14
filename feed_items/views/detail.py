@@ -7,6 +7,8 @@ from feed_items.models import FeedItem
 
 
 class FeedItemDetailView(LoginRequiredMixin, DetailView):
+    """View for displaying single feed item"""
+
     form_class = CreateCommentForm
     template_name = 'feed_items/detail.html'
     model = FeedItem

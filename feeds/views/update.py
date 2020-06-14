@@ -5,6 +5,8 @@ from feeds.models import Feed
 
 
 class FeedUpdateView(LoginRequiredMixin, UpdateView):
+    """View for updating the feed"""
+
     model = Feed
     template_name = 'feeds/update.html'
     fields = ['name']

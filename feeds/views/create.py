@@ -5,6 +5,8 @@ from feeds.forms import CreateFeedForm
 
 
 class FeedCreateView(LoginRequiredMixin, CreateView):
+    """View for creating new feed"""
+
     form_class = CreateFeedForm
     template_name = 'feeds/create.html'
 

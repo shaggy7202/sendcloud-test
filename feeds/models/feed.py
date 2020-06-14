@@ -22,6 +22,7 @@ class Feed(models.Model):
 
     class Meta:
         unique_together = ('created_by', 'url')
+        ordering = ['-id']
 
     def __str__(self):
         return self.name

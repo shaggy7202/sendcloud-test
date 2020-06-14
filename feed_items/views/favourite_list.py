@@ -5,6 +5,8 @@ from feed_items.models import Favourite
 
 
 class FavouriteListView(LoginRequiredMixin, ListView):
+    """View for displaying list of favourite feed items"""
+
     template_name = 'feed_items/favourites_list.html'
     model = Favourite
     paginate_by = 20

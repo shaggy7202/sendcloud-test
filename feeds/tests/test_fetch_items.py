@@ -22,6 +22,7 @@ def test_fetch_items(
     )
     authenticated_client.get(url)
     updated_feed = Feed.objects.get(pk=feed.pk)
+    # Check feed items created for fixture
     assert updated_feed.items.count() == 2
     assert updated_feed.fetcher.enabled
 
